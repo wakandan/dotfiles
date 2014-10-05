@@ -81,8 +81,6 @@ export PATH="/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/
 source /home/akai/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 export PATH=$PATH:/home/akai/Downloads/AWS-ElasticBeanstalk-CLI-2.6.3/eb/linux/python2.7/:/home/akai/.cabal/bin/
 alias v=vim
-#. /home/akai/.vim/bundle/powerline/powerline/bindings/zsh/powerline.zsh
-
 export PATH="$PATH:$HOME/.rvm/bin:$HOME/.local/bin" # Add RVM to PATH for scripting
 source ~/.rvm/scripts/rvm
 

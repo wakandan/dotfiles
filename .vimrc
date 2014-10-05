@@ -42,6 +42,7 @@ Plugin 'terryma/vim-multiple-cursors'
 "help commenting 
 Plugin 'scrooloose/nerdcommenter'
 
+<<<<<<< HEAD
 "nice status line for vim
 Plugin 'Lokaltog/powerline'
 
@@ -57,6 +58,10 @@ Plugin 'fs111/pydoc.vim'
 "move between buffers
 "map bh :bp<cr>
 "map bl :bn<cr>
+=======
+map bh :bp<cr>
+map bl :bn<cr>
+>>>>>>> 66f2c396d4a3b8b5f27392d4387ed25121197cc9
 "
 "" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<tab>"
