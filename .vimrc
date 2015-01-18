@@ -1,4 +1,5 @@
 set nocompatible              " be iMproved, required
+set mouse=a
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
@@ -33,6 +34,9 @@ Plugin 'fholgado/minibufexpl.vim'
 
 "help commenting 
 Plugin 'scrooloose/nerdcommenter'
+
+"Nerd tree
+Plugin 'scrooloose/nerdtree'
 
 "nice status line for vim
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
@@ -158,12 +162,12 @@ inoremap <expr><C-l>     neocomplete#complete_common_string()
 
 " Recommended key-mappings.
 " <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return neocomplete#close_popup() . "\<CR>"
+"inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+"function! s:my_cr_function()
+"  return neocomplete#close_popup() . "\<CR>"
   " For no inserting <CR> key.
   "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
+"endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
@@ -240,3 +244,50 @@ set t_Co=256
 set fillchars+=stl:\ ,stlnc:\
 set term=xterm-256color
 set termencoding=utf-8
+
+"Toggle nerdtree
+map <F3> <ESC>:NERDTreeToggle<RETURN>
+
+" Ruby
+function! RUBYSET()
+  set autoindent!
+  set noexpandtab!
+  set tabstop=2
+  set softtabstop=2
+  set shiftwidth=2
+  set expandtab
+
+  " I prefer using same highlight for Ruby string and Ruby symbol
+  hi clear rubySymbol
+  hi link  rubySymbol String
+
+  " Some simple highlight for Capybara
+  syn keyword rubyRailsTestMethod feature scenario before after 
+  hi link rubyRailsTestMethod Function
+
+ nnoremap <buffer> <F9> :exec '!clear;ruby' shellescape(@%, 1)<cr>
+ nnoremap <buffer> <F8> :exec '!clear;rspec' shellescape(@%, 1)<cr>
+endfunction
+
+autocmd FileType ruby   call RUBYSET()
+
+"use F4 to search for word under cursor for all files
+map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
+
+"====================for searching in vim==========================
+"override for silver search 
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+"end/====================for searching in vim==========================
