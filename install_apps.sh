@@ -36,8 +36,15 @@ function git_clone_or_update {
 # add all needed repositores, update and install
 function add_sources {
 	echo "=== Add sources ==="
-	sudo add-apt-repository -y ppa:kilian/f.lux 	#flux
-	sudo apt-get update
+
+    #flux
+	sudo add-apt-repository -y ppa:kilian/f.lux
+
+    #spotify
+    sudo apt-add-repository -y "deb http://repository.spotify.com stable non-free"
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 94558F59
+
+	sudo apt-get update -qq
 }
 
 function install_flux {
@@ -65,9 +72,26 @@ function install_vim_plugins {
 	vim +PluginInstall +qall
 }
 
+function setup_git_config {
+    git config --global user.email "wakandan@gmail.com"
+    git config --global user.name "Dang Nguyen Anh Khoa"
+}
+
 function install_packages {
 	echo "=== Install packages ==="
 	sudo apt-get install -y gparted git-core
+    sudo apt-get install -y python-gst0.10 gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly python-wnck
+}
+
+function install_spotify {
+    current_folder=`pwd`
+    sudo apt-get install spotify-client
+    #install blockify
+    git clone https://github.com/mikar/blockify /tmp/blockify 
+    cd /tmp/blockify
+    pip install 
+    cd $current_folder
+    exit 0
 }
 
 
@@ -91,10 +115,12 @@ function install_python_virtualenv {
 	source ~/env/bin/activate
 }
 
-#add_sources
-#install_packages
+add_sources
+install_packages
+setup_git_config
 init_dot_files
-#install_flux
+install_flux
 install_vim_plugins
-#install_zsh
-#install_python_virtualenv
+install_zsh
+install_python_virtualenv
+install_spotify
