@@ -46,7 +46,7 @@ function add_sources {
 
     #numix
     sudo add-apt-repository -y ppa:numix/ppa 
-    
+
     info 'update apt-get'
     sudo apt-get update -qq
     success 'added sources'
@@ -103,6 +103,7 @@ function setup_git_config {
     success 'config git'
     git config --global user.email "wakandan@gmail.com"
     git config --global user.name "Dang Nguyen Anh Khoa"
+    git config --global core.editor vim
     success 'configured git'
 }
 
@@ -111,6 +112,10 @@ function install_packages {
     sudo apt-get install -y gparted git-core
     sudo apt-get install -y python-gst0.10 gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly python-wnck
     sudo apt-get install -y silversearcher-ag
+
+    #xclip - tool to copy content to clipboard, use as xclip -sel clip < file
+    sudo apt-get install -y xclip
+
     success 'installed packages'
 }
 
@@ -158,6 +163,23 @@ function install_unity_tweak_tool_n_numix_theme {
     sudo apt-get install -y numix-wallpaper-notd
     sudo apt-get install -y unity-tweak-tool
     success 'installed numix'
+}
+
+function generate_ssh_key {
+    success 'generating ssh key'
+    if [ -f ~/.ssh/id_rsa.pub ]; then
+        success 'public key found. this may not be needed...'
+        return 
+    fi
+
+    ssh-keygen -t rsa -C "wakandan@gmail.com"
+    info 'starting ssh-agent'
+    eval "$(ssh-agent -s)"
+    info 'copying ssh pub key to clipboard'
+    xclip -sel clip < ~/.ssh/id_rsa.pub
+    success 'public key copied to clipboard, please add it to github settings...'
+    read
+    success 'generated ssh key'
 }
 
 #add_sources
