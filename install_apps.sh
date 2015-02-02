@@ -42,7 +42,10 @@ function add_sources {
 
     #spotify
     sudo apt-add-repository -y "deb http://repository.spotify.com stable non-free"
-    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 94558F59
+    sudo apt-key adv -y --keyserver keyserver.ubuntu.com --recv-keys 94558F59
+
+    #numix
+    sudo add-apt-repository -y ppa:numix/ppa 
 
 	sudo apt-get update -qq
 }
@@ -115,12 +118,19 @@ function install_python_virtualenv {
 	source ~/env/bin/activate
 }
 
+function install_unity_tweak_tool_n_numix_theme {
+    sudo apt-get install -y numix-gtk-theme numix-icon-theme-circle 
+    sudo apt-get install -y numix-wallpaper-notd
+    sudo apt-get install -y unity-tweak-tool
+}
+
 add_sources
-install_packages
-setup_git_config
-init_dot_files
-install_flux
-install_vim_plugins
-install_zsh
-install_python_virtualenv
-install_spotify
+#install_packages
+#setup_git_config
+#init_dot_files
+#install_flux
+#install_vim_plugins
+#install_zsh
+#install_python_virtualenv
+#install_spotify
+install_unity_tweak_tool_n_numix_theme
