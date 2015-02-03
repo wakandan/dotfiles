@@ -182,13 +182,20 @@ function generate_ssh_key {
     success 'generated ssh key'
 }
 
+function install_calibre {
+    success 'install calibre'
+    sudo -v && wget -nv -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()"
+    success 'installed calibre'
+}
+
 #add_sources
 #install_packages
 #setup_git_config
 #init_dot_files
-install_flux
+#install_flux
 #install_vim_plugins
 #install_zsh
 #install_python_virtualenv
 #install_spotify
 #install_unity_tweak_tool_n_numix_theme
+install_calibre
