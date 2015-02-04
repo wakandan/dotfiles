@@ -47,6 +47,9 @@ function add_sources {
     #numix
     sudo add-apt-repository -y ppa:numix/ppa 
 
+    #java jdk
+    sudo add-apt-repository -y ppa:webupd8team/java
+
     info 'update apt-get'
     sudo apt-get update -qq
     success 'added sources'
@@ -115,6 +118,11 @@ function install_packages {
 
     #xclip - tool to copy content to clipboard, use as xclip -sel clip < file
     sudo apt-get install -y xclip
+
+    #install oracle jdk8, auto set jdk environment variables as well 
+    #auto accept licence
+    echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+    sudo apt-get install -y oracle-java8-installer oracle-java8-set-default
 
     success 'installed packages'
 }
@@ -188,8 +196,8 @@ function install_calibre {
     success 'installed calibre'
 }
 
-#add_sources
-#install_packages
+add_sources
+install_packages
 #setup_git_config
 #init_dot_files
 #install_flux
@@ -198,4 +206,4 @@ function install_calibre {
 #install_python_virtualenv
 #install_spotify
 #install_unity_tweak_tool_n_numix_theme
-install_calibre
+#install_calibre
