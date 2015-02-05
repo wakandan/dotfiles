@@ -196,8 +196,14 @@ function install_calibre {
     success 'installed calibre'
 }
 
-add_sources
-install_packages
+function install_kvm {
+     sudo apt-get install -y qemu-kvm libvirt-bin ubuntu-vm-builder bridge-utils
+     sudo adduser akai kvm
+     sudo adduser akai libvirtd
+}
+
+#add_sources
+#install_packages
 #setup_git_config
 #init_dot_files
 #install_flux
@@ -207,3 +213,4 @@ install_packages
 #install_spotify
 #install_unity_tweak_tool_n_numix_theme
 #install_calibre
+install_kvm
