@@ -112,7 +112,7 @@ function setup_git_config {
 
 function install_packages {
     success 'install packages'
-    sudo apt-get install -y gparted git-core
+    sudo apt-get install -y gparted git-core bumblebee
     sudo apt-get install -y python-gst0.10 gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly python-wnck
     sudo apt-get install -y silversearcher-ag
 
