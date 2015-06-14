@@ -33,9 +33,6 @@ Plugin 'scrooloose/nerdcommenter'
 "Nerd tree
 Plugin 'scrooloose/nerdtree'
 
-"nice status line for vim
-Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-
 "navigate to function defs
 Plugin 'tacahiroy/ctrlp-funky'
 
@@ -125,24 +122,12 @@ nnoremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
 set showmode
 
-set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings/vim
-
 " Always show statusline
 set laststatus=2
 "
 " " Use 256 colours (Use this setting only if your terminal supports 256
 " colours)
 set t_Co=256"
-
-"=================Powerline fonts===============
-set guifont=Inconsolata\ for\ Powerline:h15
-let g:Powerline_symbols = 'fancy'
-set encoding=utf-8
-set t_Co=256
-set fillchars+=stl:\ ,stlnc:\
-set term=xterm-256color
-set termencoding=utf-8
-"end/=================Powerline fonts===============
 
 "Toggle nerdtree
 map <F3> <ESC>:NERDTreeToggle<RETURN>
