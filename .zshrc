@@ -87,43 +87,8 @@ export EDITOR='vim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-#import from virtualenvwrapper
-source /usr/local/bin/virtualenvwrapper.sh
-source ~/.rvm/scripts/rvm
-
-export ANDROID_HOME=/Applications/android-sdk-macosx/
-#for macport
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-
-#for vert.x
-export PATH=$PATH:/Users/developer/apps/vert.x-2.1.5/bin
-export MANPATH=/opt/local/share/man:$MANPATH
-
-#for powerline
-. /Users/developer/.vim/bundle/powerline/powerline/bindings/zsh/powerline.zsh
-
-# for work
-export FLIGHTS_DOCKER_HOST=tcp://localhost:35001
-
-#for docker when running "boot2docker up" from iterm2
-export DOCKER_CERT_PATH=/Users/developer/.boot2docker/certs/boot2docker-vm
-export DOCKER_TLS_VERIFY=
-
-#remember to ssh tunnel-staging first
-#localhost:35001 is refering to flights-staging-a-1.bezerk.org
-export DOCKER_HOST=tcp://localhost:35001
-
 #for hub
 alias lst='ls -larth'
-
-#for marathon
-export MARATHON_URL=localhost:28080
-
-#for sublime
-export PATH=$PATH:~/bin
-
-
-
 
 #for ========================vim======================== mode
 # enable vim mode on commmand line
