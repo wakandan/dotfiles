@@ -59,9 +59,6 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH=$PATH:"/Users/developer/.rvm/gems/ruby-2.1.4/bin:/Users/developer/.rvm/gems/ruby-2.1.4@global/bin:/Users/developer/.rvm/rubies/ruby-2.1.4/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/developer/.rvm/bin"
-# export MANPATH="/usr/local/man:$MANPATH"
-
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 export EDITOR='vim'
@@ -91,70 +88,8 @@ export EDITOR='vim'
 source /usr/local/bin/virtualenvwrapper.sh
 source ~/.rvm/scripts/rvm
 
-export ANDROID_HOME=/Applications/android-sdk-macosx/
-#for macport
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-
-#for vert.x
-export PATH=$PATH:/Users/developer/apps/vert.x-2.1.5/bin
-export MANPATH=/opt/local/share/man:$MANPATH
-
 #for powerline
 . /Users/developer/.vim/bundle/powerline/powerline/bindings/zsh/powerline.zsh
 
-# for work
-export FLIGHTS_DOCKER_HOST=tcp://localhost:35001
-
-#for docker when running "boot2docker up" from iterm2
-export DOCKER_CERT_PATH=/Users/developer/.boot2docker/certs/boot2docker-vm
-export DOCKER_TLS_VERIFY=
-
-#remember to ssh tunnel-staging first
-#localhost:35001 is refering to flights-staging-a-1.bezerk.org
-export DOCKER_HOST=tcp://localhost:35001
-
 #for hub
 alias lst='ls -larth'
-
-#for marathon
-export MARATHON_URL=localhost:28080
-
-#for sublime
-export PATH=$PATH:~/bin
-
-
-
-
-#for ========================vim======================== mode
-# enable vim mode on commmand line
-bindkey -v
-
-# no delay entering normal mode
-# https://coderwall.com/p/h63etq
-# https://github.com/pda/dotzsh/blob/master/keyboard.zsh#L10
-# 10ms for key sequences
-KEYTIMEOUT=1
-
-# show vim status
-# http://zshwiki.org/home/examples/zlewidgets
-#function zle-line-init zle-keymap-select {
-#    RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
-#    RPS2=$RPS1
-#    zle reset-prompt
-#}
-#zle -N zle-line-init
-#zle -N zle-keymap-select
-
-# add missing vim hotkeys
-# fixes backspace deletion issues
-# http://zshwiki.org/home/zle/vi-mode
-bindkey -a u undo
-bindkey -a '^R' redo
-bindkey '^?' backward-delete-char
-bindkey '^H' backward-delete-char
-
-# history search in vim mode
-# http://zshwiki.org./home/zle/bindkeys#why_isn_t_control-r_working_anymore
-bindkey -M viins '^s' history-incremental-search-backward
-bindkey -M vicmd '^s' history-incremental-search-backward
-#end/for ========================vim======================== mode
