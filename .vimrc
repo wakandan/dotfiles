@@ -25,8 +25,6 @@ Plugin 'moll/vim-node'
 "multiple cursor in vim 
 Plugin 'terryma/vim-multiple-cursors'
 
-Plugin 'fholgado/minibufexpl.vim'
-
 "help commenting 
 Plugin 'scrooloose/nerdcommenter'
 
@@ -34,16 +32,14 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 
 "nice status line for vim
-Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 
 "navigate to function defs
 Plugin 'tacahiroy/ctrlp-funky'
 
 "View pydoc for python
 Plugin 'fs111/pydoc.vim'
-
-Bundle 'Shougo/neosnippet'
-Bundle 'Shougo/neosnippet-snippets'
 
 " Comment stuff out with gc<motion>
 Plugin 'tpope/vim-commentary'
@@ -56,16 +52,46 @@ Plugin 'rking/ag.vim'
 
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
-Plugin 'garbas/vim-snipmate'
 
-" Optional:
+Plugin 'tfnico/vim-gradle'
+
+Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+
+" Trigger configuration. Do not use <tab> if you use
+" https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
 
 " Mapping for vim multiple cursor
 let g:multi_cursor_next_key='<C-n>'
 let g:multi_cursor_prev_key='<C-S-p>'
 let g:multi_cursor_skip_key='<C-S-x>'
 let g:multi_cursor_quit_key='<Esc>'
+let g:airline_theme = 'papercolor'
+let g:airline_powerline_fonts = 1
+set ttimeoutlen=50
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#whitespace = 0
+let g:airline#extensions#branch#enabled=1
+
+let g:cssColorVimDoNotMessMyUpdatetime = 1
+let g:ag_working_path_mode="r"
+
+set laststatus=2
+let g:bufferline_echo = 0
+
+noremap <C-l> :bnext<CR>
+noremap <C-h> :bprev<CR>
+noremap <C-c> :bdelete<CR>
+noremap ,n :NERDTreeFind<CR>
+
 
 syntax enable
 " Put your non-Plugin stuff after this line
@@ -158,16 +184,8 @@ function! RUBYSET()
   set expandtab
   set autoindent
 
-  " I prefer using same highlight for Ruby string and Ruby symbol
-  hi clear rubySymbol
-  hi link  rubySymbol String
-
-  " Some simple highlight for Capybara
-  syn keyword rubyRailsTestMethod feature scenario before after 
-  hi link rubyRailsTestMethod Function
-
- nnoremap <buffer> <F9> :exec '!clear;ruby' shellescape(@%, 1)<cr>
- nnoremap <buffer> <F8> :exec '!clear;rspec' shellescape(@%, 1)<cr>
+  " don't set line number
+  set nu! 
 endfunction
 
 autocmd FileType ruby   call RUBYSET()
@@ -224,3 +242,18 @@ nnoremap gn :bn<CR>
 "press f5 to select buffer by number
 nnoremap <F5> :buffers<CR>:buffer<Space>
 "end/====================for buffers vim==========================
+
+if bufwinnr(1)
+  map + <C-W>+
+  map - <C-W>-
+endif
+
+"===================tab setup=====================
+set switchbuf=usetab
+"f8 for next tab
+nnoremap <F8> :sbnext<CR>
+nnoremap ct :tabclose<CR>
+"shift f8 for previous tab
+"
+nnoremap <S-F8> :sbprevious<CR>
+"end/===================tab setup=====================
