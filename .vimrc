@@ -35,9 +35,6 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
-"navigate to function defs
-Plugin 'tacahiroy/ctrlp-funky'
-
 "View pydoc for python
 Plugin 'fs111/pydoc.vim'
 
@@ -57,6 +54,8 @@ Plugin 'tfnico/vim-gradle'
 
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+Plugin 'scrooloose/syntastic'
+
 
 " Trigger configuration. Do not use <tab> if you use
 " https://github.com/Valloric/YouCompleteMe.
@@ -81,16 +80,29 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#whitespace = 0
 let g:airline#extensions#branch#enabled=1
 
+" syntastic recommended settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
 let g:cssColorVimDoNotMessMyUpdatetime = 1
 let g:ag_working_path_mode="r"
 
 set laststatus=2
 let g:bufferline_echo = 0
+let NERDTreeWinSize=40
 
 noremap <C-l> :bnext<CR>
 noremap <C-h> :bprev<CR>
 noremap <C-c> :bdelete<CR>
 noremap ,n :NERDTreeFind<CR>
+noremap <C-PageUp> <Esc>:tabnext<CR>
+noremap <C-PageDown> <Esc>:tabprevious<CR>
 
 
 syntax enable
@@ -128,8 +140,8 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 filetype plugin on
 
 " supposed to enable auto indent
@@ -141,10 +153,7 @@ set number
 set list
 set listchars=tab:>-,trail:.,extends:#,nbsp:.
 
-let g:ctrlp_extensions = ['funky']
-nnoremap <Leader>fu :CtrlPFunky<Cr>
-" narrow the list down with a word under cursor
-nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+let g:ctrlp_extensions = []
 
 " use f2 to toggle pating with auto-indentation 
 nnoremap <F2> :set invpaste paste?<CR>
