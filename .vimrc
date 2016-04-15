@@ -27,11 +27,7 @@ Plugin 'terryma/vim-multiple-cursors'
 
 "help commenting 
 Plugin 'scrooloose/nerdcommenter'
-
-"Nerd tree
 Plugin 'scrooloose/nerdtree'
-
-"nice status line for vim
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
@@ -46,16 +42,21 @@ Plugin 'tpope/vim-markdown'
 
 " Ag for quick grep
 Plugin 'rking/ag.vim'
-
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
-
 Plugin 'tfnico/vim-gradle'
-
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'scrooloose/syntastic'
+Plugin 'xolox/vim-easytags'
+Plugin 'xolox/vim-misc'
+Plugin 'taglist.vim'
+Plugin 'ivalkeen/vim-ctrlp-tjump'
 
+"Tags
+set tags=./.tags;
+let g:easytags_dynamic_files = 1
+let Tlist_Use_Right_Window   = 1
 
 " Trigger configuration. Do not use <tab> if you use
 " https://github.com/Valloric/YouCompleteMe.
@@ -100,7 +101,6 @@ let NERDTreeWinSize=40
 noremap <C-l> :bnext<CR>
 noremap <C-h> :bprev<CR>
 noremap <C-c> :bdelete<CR>
-noremap ,n :NERDTreeFind<CR>
 noremap <C-PageUp> <Esc>:tabnext<CR>
 noremap <C-PageDown> <Esc>:tabprevious<CR>
 
@@ -154,6 +154,8 @@ set list
 set listchars=tab:>-,trail:.,extends:#,nbsp:.
 
 let g:ctrlp_extensions = []
+" Use ctrl+P to go directly to tag
+nnoremap <leader>. :CtrlPTag<cr>
 
 " use f2 to toggle pating with auto-indentation 
 nnoremap <F2> :set invpaste paste?<CR>
@@ -181,6 +183,10 @@ set termencoding=utf-8
 
 "Toggle nerdtree
 map <F3> <ESC>:NERDTreeToggle<RETURN>
+map <F4> <ESC>:TlistToggle<RETURN>
+nnoremap <c-]> :CtrlPtjump<cr>
+vnoremap <c-]> :CtrlPtjumpVisual<cr>
+noremap ,n :NERDTreeFind<CR>
 
 "=======================file specific options===================
 " Ruby
@@ -214,12 +220,6 @@ endfunction
 
 autocmd FileType python call PYTHONSET()
 
-"use F4 to search for word under cursor for all files
-map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
-
-
-
-
 "====================for searching in vim==========================
 "override for silver search 
 " The Silver Searcher
@@ -236,21 +236,7 @@ endif
 
 " bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-"end/====================for searching in vim==========================
 
-
-
-
-"====================for buffers vim==========================
-"go to previous buffer
-nnoremap gp :bp<CR> 
-
-"go to next buffer
-nnoremap gn :bn<CR> 
-
-"press f5 to select buffer by number
-nnoremap <F5> :buffers<CR>:buffer<Space>
-"end/====================for buffers vim==========================
 
 if bufwinnr(1)
   map + <C-W>+
