@@ -52,6 +52,7 @@ Plugin 'xolox/vim-easytags'
 Plugin 'xolox/vim-misc'
 Plugin 'taglist.vim'
 Plugin 'ivalkeen/vim-ctrlp-tjump'
+Plugin 'isRuslan/vim-es6'
 
 "Tags
 set tags=./.tags;
