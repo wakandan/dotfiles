@@ -10,21 +10,17 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
-
-" Git plugin not hosted on GitHub
-Plugin 'https://github.com/kien/ctrlp.vim.git'
-
-Plugin 'https://github.com/mattn/emmet-vim.git'
-
+Plugin 'kien/ctrlp.vim.git'
+Plugin 'mattn/emmet-vim.git'
 Plugin 'jiangmiao/auto-pairs'
-
 Plugin 'digitaltoad/vim-jade'
-
 Plugin 'moll/vim-node'
+Plugin 'taglist.vim'
+Plugin 'szw/vim-tags'
+Plugin 'scrooloose/syntastic'
 
 "multiple cursor in vim 
 Plugin 'terryma/vim-multiple-cursors'
-
 "help commenting 
 Plugin 'scrooloose/nerdcommenter'
 
@@ -52,11 +48,25 @@ Plugin 'rking/ag.vim'
 
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
-
 Plugin 'tfnico/vim-gradle'
-
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+Plugin 'ivalkeen/vim-ctrlp-tjump'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'tpope/vim-rails'
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:vim_tags_auto_generate = 1
+let g:vim_tags_main_file = '.tags'
+let Tlist_Use_Right_Window=1
 
 " Trigger configuration. Do not use <tab> if you use
 " https://github.com/Valloric/YouCompleteMe.
@@ -91,6 +101,9 @@ noremap <C-l> :bnext<CR>
 noremap <C-h> :bprev<CR>
 noremap <C-c> :bdelete<CR>
 noremap ,n :NERDTreeFind<CR>
+noremap <C-t> :CtrlPTag<CR>
+nnoremap <c-]> :CtrlPtjump<cr>
+vnoremap <c-]> :CtrlPtjumpVisual<cr>
 
 
 syntax enable
@@ -128,8 +141,8 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 filetype plugin on
 
 " supposed to enable auto indent
@@ -141,7 +154,7 @@ set number
 set list
 set listchars=tab:>-,trail:.,extends:#,nbsp:.
 
-let g:ctrlp_extensions = ['funky']
+let g:ctrlp_extensions = ['funky', 'tag']
 nnoremap <Leader>fu :CtrlPFunky<Cr>
 " narrow the list down with a word under cursor
 nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
@@ -172,6 +185,7 @@ set termencoding=utf-8
 
 "Toggle nerdtree
 map <F3> <ESC>:NERDTreeToggle<RETURN>
+map <F4> <ESC>:TlistToggle<RETURN>
 
 "=======================file specific options===================
 " Ruby
@@ -204,11 +218,6 @@ function! PYTHONSET()
 endfunction
 
 autocmd FileType python call PYTHONSET()
-
-"use F4 to search for word under cursor for all files
-map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
-
-
 
 
 "====================for searching in vim==========================
