@@ -23,16 +23,9 @@ Plugin 'scrooloose/syntastic'
 Plugin 'terryma/vim-multiple-cursors'
 "help commenting 
 Plugin 'scrooloose/nerdcommenter'
-
-"Nerd tree
 Plugin 'scrooloose/nerdtree'
-
-"nice status line for vim
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-
-"navigate to function defs
-Plugin 'tacahiroy/ctrlp-funky'
 
 "View pydoc for python
 Plugin 'fs111/pydoc.vim'
@@ -45,7 +38,6 @@ Plugin 'tpope/vim-markdown'
 
 " Ag for quick grep
 Plugin 'rking/ag.vim'
-
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'tfnico/vim-gradle'
@@ -54,6 +46,8 @@ Plugin 'honza/vim-snippets'
 Plugin 'ivalkeen/vim-ctrlp-tjump'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'tpope/vim-rails'
+Plugin 'xolox/vim-easytags'
+Plugin 'xolox/vim-misc'
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -67,6 +61,10 @@ let g:syntastic_check_on_wq = 0
 let g:vim_tags_auto_generate = 1
 let g:vim_tags_main_file = '.tags'
 let Tlist_Use_Right_Window=1
+
+"Tags
+set tags=./.tags;
+let g:easytags_dynamic_files = 1
 
 " Trigger configuration. Do not use <tab> if you use
 " https://github.com/Valloric/YouCompleteMe.
@@ -91,11 +89,22 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#whitespace = 0
 let g:airline#extensions#branch#enabled=1
 
+" syntastic recommended settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
 let g:cssColorVimDoNotMessMyUpdatetime = 1
 let g:ag_working_path_mode="r"
 
 set laststatus=2
 let g:bufferline_echo = 0
+let NERDTreeWinSize=40
 
 noremap <C-l> :bnext<CR>
 noremap <C-h> :bprev<CR>
@@ -156,6 +165,7 @@ set listchars=tab:>-,trail:.,extends:#,nbsp:.
 
 let g:ctrlp_extensions = ['funky', 'tag']
 nnoremap <Leader>fu :CtrlPFunky<Cr>
+nnoremap <leader>. :CtrlPTag<cr>
 " narrow the list down with a word under cursor
 nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
 
@@ -219,7 +229,6 @@ endfunction
 
 autocmd FileType python call PYTHONSET()
 
-
 "====================for searching in vim==========================
 "override for silver search 
 " The Silver Searcher
@@ -236,21 +245,7 @@ endif
 
 " bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-"end/====================for searching in vim==========================
 
-
-
-
-"====================for buffers vim==========================
-"go to previous buffer
-nnoremap gp :bp<CR> 
-
-"go to next buffer
-nnoremap gn :bn<CR> 
-
-"press f5 to select buffer by number
-nnoremap <F5> :buffers<CR>:buffer<Space>
-"end/====================for buffers vim==========================
 
 if bufwinnr(1)
   map + <C-W>+
