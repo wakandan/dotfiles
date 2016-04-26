@@ -49,6 +49,8 @@ Plugin 'tpope/vim-rails'
 Plugin 'xolox/vim-easytags'
 Plugin 'xolox/vim-misc'
 
+let mapleader = ","
+
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -59,7 +61,7 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 let g:vim_tags_auto_generate = 1
-let g:vim_tags_main_file = '.tags'
+let g:vim_tags_main_file = './.tags'
 let Tlist_Use_Right_Window=1
 
 "Tags
@@ -109,16 +111,20 @@ let NERDTreeWinSize=40
 noremap <C-l> :bnext<CR>
 noremap <C-h> :bprev<CR>
 noremap <C-c> :bdelete<CR>
-noremap ,n :NERDTreeFind<CR>
+noremap <Leader>nf :NERDTreeFind<CR>
 noremap <C-t> :CtrlPTag<CR>
 nnoremap <c-]> :CtrlPtjump<cr>
+noremap <Leader>em :Emodel 
+noremap <Leader>ec :Econtroller 
+noremap <Leader>ev :Eview 
+noremap <Leader>f :Ag 
+noremap <Leader>g :Ag -G\.
 vnoremap <c-]> :CtrlPtjumpVisual<cr>
 
 
 syntax enable
 " Put your non-Plugin stuff after this line
 "
-let mapleader = "\<Space>"
 set background=dark
 set number
 set t_Co=256
