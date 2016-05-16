@@ -1,0 +1,5 @@
+[user]
+	name = wakandan
+	email = wakandan@gmail.com
+[core]
+	editor = vim
