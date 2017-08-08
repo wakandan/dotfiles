@@ -192,6 +192,12 @@ function swap_ctrl_caplocks {
   success 'done swapping ctrl and caplocks'
 }
 
+function install_chromium {
+  sudo add-apt-repository ppa:canonical-chromium-builds/stage
+  sudo apt-get update
+  sudo apt-get install chromium-browser
+}
+
 #add_sources
 install_packages
 setup_git_config
@@ -204,4 +210,5 @@ install_zsh
 #install_unity_tweak_tool_n_numix_theme
 #install_calibre
 #install_kvm
+install_chromium
 success 'you should restart your computer now'
