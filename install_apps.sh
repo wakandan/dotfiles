@@ -28,7 +28,7 @@ function git_clone_or_update {
     if [ -d $folder ]; then
         git pull    
     else 
-        git clone $repo
+        git clone $repo $folder
     fi  
     cd $current_folder
 }
@@ -39,16 +39,6 @@ function add_sources {
 
     #flux
     sudo add-apt-repository -y ppa:kilian/f.lux
-
-    #spotify
-    sudo apt-add-repository -y "deb http://repository.spotify.com stable non-free"
-    sudo apt-key adv -y --keyserver keyserver.ubuntu.com --recv-keys 94558F59
-
-    #numix
-    sudo add-apt-repository -y ppa:numix/ppa 
-
-    #java jdk
-    sudo add-apt-repository -y ppa:webupd8team/java
 
     info 'update apt-get'
     sudo apt-get update -qq
@@ -85,11 +75,10 @@ function install_flux {
 
 function init_dot_files {
     success 'init dot files (.vimrc, .zshrc)'
-    git_clone_or_update git@github.com:wakandan/dotfiles.git ~/.config/dotfiles 
     info 'linking .zshrc'
-    ln -s /home/akai/.config/dotfiles/.zshrc /home/akai/.zshrc
+    ln -f -s $(pwd)/.zshrc /home/$USER/.zshrc
     info 'linking .vimrc'
-    ln -s /home/akai/.config/dotfiles/.vimrc /home/akai/.vimrc 
+    ln -f -s $(pwd)/.vimrc /home/$USER/.vimrc 
     success 'setup dot files'
 }
 
@@ -112,17 +101,12 @@ function setup_git_config {
 
 function install_packages {
     success 'install packages'
-    sudo apt-get install -y gparted git-core bumblebee
-    sudo apt-get install -y python-gst0.10 gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly python-wnck
-    sudo apt-get install -y silversearcher-ag
+    sudo apt-get install -y gparted git-core curl
+    sudo apt-get install -y python-gst0.10 gstreamer0.10-plugins-good python-wnck
+    sudo apt-get install -y silversearcher-ag exuberant-ctags
 
     #xclip - tool to copy content to clipboard, use as xclip -sel clip < file
     sudo apt-get install -y xclip
-
-    #install oracle jdk8, auto set jdk environment variables as well 
-    #auto accept licence
-    echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
-    sudo apt-get install -y oracle-java8-installer oracle-java8-set-default
 
     success 'installed packages'
 }
@@ -146,7 +130,7 @@ function install_zsh {
     info 'change default shell to zsh'
     chsh -s /bin/zsh    
     info 'install oh-my-zsh'
-    wget –no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O – | sh 
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     success 'installed ssh'
 }
 
@@ -202,15 +186,22 @@ function install_kvm {
      sudo adduser akai libvirtd
 }
 
+function swap_ctrl_caplocks {
+  success 'swapping ctrl and caplocks'
+  setxkbmap -option ctrl:swapcaps
+  success 'done swapping ctrl and caplocks'
+}
+
 #add_sources
-#install_packages
-#setup_git_config
-#init_dot_files
+install_packages
+setup_git_config
+init_dot_files
 #install_flux
-#install_vim_plugins
-#install_zsh
+install_vim_plugins
+install_zsh
 #install_python_virtualenv
 #install_spotify
 #install_unity_tweak_tool_n_numix_theme
 #install_calibre
-install_kvm
+#install_kvm
+success 'you should restart your computer now'
