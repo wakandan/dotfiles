@@ -217,18 +217,27 @@ function install_java8 {
   success 'done installing java8'
 }
 
+function install_thunderbird {
+  info 'installing thunderbird'
+  check_or_add_ppa 'ubuntu-mozilla-security/ppa'
+  sudo apt-get update
+  sudo apt-get install thunderbird
+  success 'installing thunderbird'
+}
+
 #add_sources
-install_packages
-setup_git_config
-init_dot_files
+#install_packages
+#setup_git_config
+#init_dot_files
 #install_flux
-install_vim_plugins
-install_zsh
+#install_vim_plugins
+#install_zsh
 #install_python_virtualenv
 #install_spotify
 #install_unity_tweak_tool_n_numix_theme
 #install_calibre
 #install_kvm
-install_chromium
-install_java8
+#install_chromium
+#install_java8
+install_thunderbird
 success 'you should restart your computer now'
