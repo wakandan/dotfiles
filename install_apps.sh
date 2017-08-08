@@ -21,6 +21,15 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
+function check_or_add_ppa {
+  ppa=$1
+  if ! grep -q "^deb .*$ppa" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
+    info "adding ppa $ppa"
+    sudo add-apt-repository -y "ppa:"$ppa 
+  fi
+  info "added ppa $ppa"
+}
+
 function git_clone_or_update {
     current_folder=`pwd`
     repo=$1
@@ -38,7 +47,7 @@ function add_sources {
     success 'add sources'
 
     #flux
-    sudo add-apt-repository -y ppa:kilian/f.lux
+    check_or_add_ppa 'ppa:kilian/f.lux'
 
     info 'update apt-get'
     sudo apt-get update -qq
@@ -125,12 +134,14 @@ function install_spotify {
 
 
 function install_zsh {
-    success 'install zsh'
-    sudo apt-get install -y zsh
-    info 'change default shell to zsh'
-    chsh -s /bin/zsh    
-    info 'install oh-my-zsh'
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    info 'install zsh'
+    if ! $SHELL == '/bin/zsh'; then
+      sudo apt-get install -y zsh
+      info 'change default shell to zsh'
+      chsh -s /bin/zsh    
+      info 'install oh-my-zsh'
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    fi
     success 'installed ssh'
 }
 
@@ -143,8 +154,8 @@ function install_python_virtualenv {
     sudo pip install virtualenv
     cd ~    #install virtualenv into home folder
     info 'creating virtual env'
-    virtualenv env
-    source ~/env/bin/activate
+    virtualenv python_env
+    source ~/python_env/bin/activate
     success 'installed python virtualenv'
     cd $old_dir
 }
@@ -193,9 +204,17 @@ function swap_ctrl_caplocks {
 }
 
 function install_chromium {
-  sudo add-apt-repository ppa:canonical-chromium-builds/stage
+  check_or_add_ppa 'canonical-chromium-builds/stage'
   sudo apt-get update
   sudo apt-get install chromium-browser
+}
+
+function install_java8 {
+  info 'installing java8'
+  check_or_add_ppa 'webupd8team/java'
+  sudo apt-get update
+  sudo apt-get install oracle-java8-installer oracle-java8-set-default
+  success 'done installing java8'
 }
 
 #add_sources
@@ -211,4 +230,5 @@ install_zsh
 #install_calibre
 #install_kvm
 install_chromium
+install_java8
 success 'you should restart your computer now'
