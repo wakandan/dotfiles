@@ -84,12 +84,5 @@ export EDITOR='vim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-#import from virtualenvwrapper
-source /usr/local/bin/virtualenvwrapper.sh
-source ~/.rvm/scripts/rvm
-
-#for powerline
-. /Users/developer/.vim/bundle/powerline/powerline/bindings/zsh/powerline.zsh
-
 #for hub
 alias lst='ls -larth'
