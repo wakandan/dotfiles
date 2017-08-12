@@ -108,6 +108,13 @@ function setup_git_config {
     success 'configured git'
 }
 
+function install_node {
+  sudo apt-get install -y python-software-properties
+  curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+  sudo apt-get install nodejs
+}
+
+
 function install_packages {
     success 'install packages'
     sudo apt-get install -y gparted git-core curl
@@ -116,6 +123,7 @@ function install_packages {
 
     #xclip - tool to copy content to clipboard, use as xclip -sel clip < file
     sudo apt-get install -y xclip
+    sudo apt-get install -y gnome-tweak-tool
 
     success 'installed packages'
 }
@@ -239,5 +247,6 @@ function install_thunderbird {
 #install_kvm
 #install_chromium
 #install_java8
-install_thunderbird
+#install_thunderbird
+install_node
 success 'you should restart your computer now'
