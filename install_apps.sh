@@ -148,7 +148,7 @@ function install_spotify {
 
 function install_zsh {
     info 'install zsh'
-    if ! "$SHELL"=="/bin/zsh"; then
+    if [ ! "$SHELL"=="/bin/zsh" ]; then
       sudo apt-get install -y zsh
       info 'change default shell to zsh'
       chsh -s /bin/zsh    
@@ -159,7 +159,7 @@ function install_zsh {
 }
 
 function install_python_virtualenv {
-    if [ ! -d "~/python_env" ]; then
+    if [ ! -d "/home/$USER/python_env" ]; then
       old_dir=`pwd`
       info 'install python virtualenv'
       info 'install pip & virtual env'
@@ -260,6 +260,27 @@ function install_guake {
   success "installed guake, remember to change the hot key and add it to startup configuration"
 }
 
+function install_atom {
+  which atom
+  if [ ! $? -eq 0 ]; then
+    info "installing atom"
+    wget "https://atom.io/download/deb" -O /tmp/atom.deb
+    sudo dpkg -i /tmp/atom.deb
+  fi
+  success "installed atom"
+}
+
+function install_virtualbox {
+  which virtualbox
+  if [ ! $? -eq 0 ]; then
+    info "installing virtualbox"
+    sudo apt-get install -y libqt4-opengl libsdl1.2debian
+    wget 'http://download.virtualbox.org/virtualbox/5.0.40/virtualbox-5.0_5.0.40-115130~Ubuntu~xenial_amd64.deb' -O /tmp/virtualbox.deb
+    sudo dpkg -i /tmp/virtualbox.deb
+  fi
+  success "installed virtualbox, remember to install virtualbox extension pack at http://download.virtualbox.org/virtualbox/5.0.40/Oracle_VM_VirtualBox_Extension_Pack-5.0.40-115130.vbox-extpack"
+}
+
 #add_sources
 install_packages
 setup_git_config
@@ -273,6 +294,8 @@ install_node
 install_zsh
 install_python_virtualenv
 install_guake
+install_atom
+install_virtualbox
 #install_spotify
 #install_unity_tweak_tool_n_numix_theme
 #install_calibre
