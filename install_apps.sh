@@ -109,14 +109,19 @@ function setup_git_config {
 }
 
 function install_node {
-  sudo apt-get install -y python-software-properties
-  curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-  sudo apt-get install nodejs
+  node -v
+  if [ ! $? -eq 0 ]; then
+    info "installing node"
+    sudo apt-get install -y python-software-properties
+    curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+    sudo apt-get install nodejs
+  fi
+  success "installed node"
 }
 
 
 function install_packages {
-    success 'install packages'
+    info 'install packages'
     sudo apt-get install -y gparted git-core curl
     sudo apt-get install -y python-gst0.10 gstreamer0.10-plugins-good python-wnck
     sudo apt-get install -y silversearcher-ag exuberant-ctags
@@ -143,7 +148,7 @@ function install_spotify {
 
 function install_zsh {
     info 'install zsh'
-    if ! $SHELL == '/bin/zsh'; then
+    if ! "$SHELL"=="/bin/zsh"; then
       sudo apt-get install -y zsh
       info 'change default shell to zsh'
       chsh -s /bin/zsh    
@@ -154,18 +159,21 @@ function install_zsh {
 }
 
 function install_python_virtualenv {
-    old_dir=`pwd`
-    success 'install python virtualenv'
-    info 'install pip & virtual env'
-    wget https://bootstrap.pypa.io/get-pip.py
-    sudo python get-pip.py
-    sudo pip install virtualenv
-    cd ~    #install virtualenv into home folder
-    info 'creating virtual env'
-    virtualenv python_env
-    source ~/python_env/bin/activate
-    success 'installed python virtualenv'
-    cd $old_dir
+    if [ ! -d "~/python_env" ]; then
+      old_dir=`pwd`
+      info 'install python virtualenv'
+      info 'install pip & virtual env'
+      wget https://bootstrap.pypa.io/get-pip.py
+      sudo python get-pip.py
+      sudo pip install virtualenv
+      cd ~    #install virtualenv into home folder
+      info 'creating virtual env'
+      virtualenv python_env
+      source ~/python_env/bin/activate
+      success 'installed python virtualenv'
+      cd $old_dir
+    fi
+    success "installed python virtualenv"
 }
 
 function install_unity_tweak_tool_n_numix_theme {
@@ -212,41 +220,62 @@ function swap_ctrl_caplocks {
 }
 
 function install_chromium {
-  check_or_add_ppa 'canonical-chromium-builds/stage'
-  sudo apt-get update
-  sudo apt-get install chromium-browser
+  which chromium-browser
+  if [ ! $? -eq 0 ]; then
+    check_or_add_ppa 'canonical-chromium-builds/stage'
+    sudo apt-get update
+    sudo apt-get install -y chromium-browser
+  fi
+  success "installed chromium browser"
 }
 
 function install_java8 {
-  info 'installing java8'
-  check_or_add_ppa 'webupd8team/java'
-  sudo apt-get update
-  sudo apt-get install oracle-java8-installer oracle-java8-set-default
+  javac -version
+  if [ ! $? -eq 0 ]; then
+    info 'installing java8'
+    check_or_add_ppa 'webupd8team/java'
+    sudo apt-get update
+    sudo apt-get install -y oracle-java8-installer oracle-java8-set-default
+  fi
   success 'done installing java8'
 }
 
 function install_thunderbird {
-  info 'installing thunderbird'
-  check_or_add_ppa 'ubuntu-mozilla-security/ppa'
-  sudo apt-get update
-  sudo apt-get install thunderbird
-  success 'installing thunderbird'
+  which thunderbird
+  if [ ! $? -eq 0 ]; then
+    info 'installing thunderbird'
+    check_or_add_ppa 'ubuntu-mozilla-security/ppa'
+    sudo apt-get update
+    sudo apt-get install thunderbird
+  fi
+  success "installing thunderbird"
+}
+
+function install_guake {
+  current_folder=`pwd`
+  info "installing guake"
+  sudo apt-get install -y python-dbus
+  git clone https://github.com/Guake/guake.git /tmp/guake
+  cd /tmp/guake
+  ./dev.sh --install
+  cd $current_folder
 }
 
 #add_sources
-#install_packages
-#setup_git_config
-#init_dot_files
+install_packages
+setup_git_config
+init_dot_files
 #install_flux
-#install_vim_plugins
-#install_zsh
-#install_python_virtualenv
+install_vim_plugins
+install_chromium
+install_java8
+install_thunderbird
+install_node
+install_zsh
+install_python_virtualenv
+install_guake
 #install_spotify
 #install_unity_tweak_tool_n_numix_theme
 #install_calibre
 #install_kvm
-#install_chromium
-#install_java8
-#install_thunderbird
-install_node
 success 'you should restart your computer now'
