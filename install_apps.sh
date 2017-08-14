@@ -87,7 +87,7 @@ function init_dot_files {
     info 'linking .zshrc'
     ln -f -s $(pwd)/.zshrc /home/$USER/.zshrc
     info 'linking .vimrc'
-    ln -f -s $(pwd)/.vimrc /home/$USER/.vimrc 
+    ln -f -s $(pwd)/.vimrc /home/$USER/.vimrc
     success 'setup dot files'
 }
 
@@ -213,12 +213,6 @@ function install_kvm {
      sudo adduser akai libvirtd
 }
 
-function swap_ctrl_caplocks {
-  success 'swapping ctrl and caplocks'
-  setxkbmap -option ctrl:swapcaps
-  success 'done swapping ctrl and caplocks'
-}
-
 function install_chromium {
   which chromium-browser
   if [ ! $? -eq 0 ]; then
@@ -248,17 +242,22 @@ function install_thunderbird {
     sudo apt-get update
     sudo apt-get install thunderbird
   fi
-  success "installing thunderbird"
+  success "installed thunderbird"
 }
 
 function install_guake {
-  current_folder=`pwd`
-  info "installing guake"
-  sudo apt-get install -y python-dbus
-  git clone https://github.com/Guake/guake.git /tmp/guake
-  cd /tmp/guake
-  ./dev.sh --install
-  cd $current_folder
+  which guake
+  if [ ! $? -eq 0 ]; then
+    info "installing guake"
+    current_folder=`pwd`
+    info "installing guake"
+    sudo apt-get install -y python-dbus
+    git clone https://github.com/Guake/guake.git /tmp/guake
+    cd /tmp/guake
+    ./dev.sh --install
+    cd $current_folder
+  fi
+  success "installed guake, remember to change the hot key and add it to startup configuration"
 }
 
 #add_sources
