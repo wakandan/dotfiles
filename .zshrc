@@ -8,7 +8,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME=""
+ZSH_THEME="robbyrussell"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -83,13 +83,6 @@ export EDITOR='vim'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-#import from virtualenvwrapper
-source /usr/local/bin/virtualenvwrapper.sh
-source ~/.rvm/scripts/rvm
-
-#for powerline
-. /Users/developer/.vim/bundle/powerline/powerline/bindings/zsh/powerline.zsh
 
 #for hub
 alias lst='ls -larth'

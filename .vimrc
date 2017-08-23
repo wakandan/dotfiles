@@ -82,8 +82,6 @@ let g:multi_cursor_next_key='<C-n>'
 let g:multi_cursor_prev_key='<C-S-p>'
 let g:multi_cursor_skip_key='<C-S-x>'
 let g:multi_cursor_quit_key='<Esc>'
-let g:airline_theme = 'papercolor'
-let g:airline_powerline_fonts = 1
 set ttimeoutlen=50
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
@@ -180,24 +178,12 @@ nnoremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
 set showmode
 
-set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings/vim
-
 " Always show statusline
 set laststatus=2
 "
 " " Use 256 colours (Use this setting only if your terminal supports 256
 " colours)
 set t_Co=256"
-
-"=================Powerline fonts===============
-set guifont=Inconsolata\ for\ Powerline:h15
-let g:Powerline_symbols = 'fancy'
-set encoding=utf-8
-set t_Co=256
-set fillchars+=stl:\ ,stlnc:\
-set term=xterm-256color
-set termencoding=utf-8
-"end/=================Powerline fonts===============
 
 "Toggle nerdtree
 map <F3> <ESC>:NERDTreeToggle<RETURN>

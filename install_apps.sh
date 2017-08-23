@@ -21,6 +21,15 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
+function check_or_add_ppa {
+  ppa=$1
+  if ! grep -q "^deb .*$ppa" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
+    info "adding ppa $ppa"
+    sudo add-apt-repository -y "ppa:"$ppa 
+  fi
+  info "added ppa $ppa"
+}
+
 function git_clone_or_update {
     current_folder=`pwd`
     repo=$1
@@ -28,7 +37,7 @@ function git_clone_or_update {
     if [ -d $folder ]; then
         git pull    
     else 
-        git clone $repo
+        git clone $repo $folder
     fi  
     cd $current_folder
 }
@@ -38,17 +47,7 @@ function add_sources {
     success 'add sources'
 
     #flux
-    sudo add-apt-repository -y ppa:kilian/f.lux
-
-    #spotify
-    sudo apt-add-repository -y "deb http://repository.spotify.com stable non-free"
-    sudo apt-key adv -y --keyserver keyserver.ubuntu.com --recv-keys 94558F59
-
-    #numix
-    sudo add-apt-repository -y ppa:numix/ppa 
-
-    #java jdk
-    sudo add-apt-repository -y ppa:webupd8team/java
+    check_or_add_ppa 'ppa:kilian/f.lux'
 
     info 'update apt-get'
     sudo apt-get update -qq
@@ -85,11 +84,10 @@ function install_flux {
 
 function init_dot_files {
     success 'init dot files (.vimrc, .zshrc)'
-    git_clone_or_update git@github.com:wakandan/dotfiles.git ~/.config/dotfiles 
     info 'linking .zshrc'
-    ln -s /home/akai/.config/dotfiles/.zshrc /home/akai/.zshrc
+    ln -f -s $(pwd)/.zshrc /home/$USER/.zshrc
     info 'linking .vimrc'
-    ln -s /home/akai/.config/dotfiles/.vimrc /home/akai/.vimrc 
+    ln -f -s $(pwd)/.vimrc /home/$USER/.vimrc
     success 'setup dot files'
 }
 
@@ -110,19 +108,27 @@ function setup_git_config {
     success 'configured git'
 }
 
+function install_node {
+  node -v
+  if [ ! $? -eq 0 ]; then
+    info "installing node"
+    sudo apt-get install -y python-software-properties
+    curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+    sudo apt-get install nodejs
+  fi
+  success "installed node"
+}
+
+
 function install_packages {
-    success 'install packages'
-    sudo apt-get install -y gparted git-core bumblebee
-    sudo apt-get install -y python-gst0.10 gstreamer0.10-plugins-good gstreamer0.10-plugins-ugly python-wnck
-    sudo apt-get install -y silversearcher-ag
+    info 'install packages'
+    sudo apt-get install -y gparted git-core curl
+    sudo apt-get install -y python-gst0.10 gstreamer0.10-plugins-good python-wnck
+    sudo apt-get install -y silversearcher-ag exuberant-ctags
 
     #xclip - tool to copy content to clipboard, use as xclip -sel clip < file
     sudo apt-get install -y xclip
-
-    #install oracle jdk8, auto set jdk environment variables as well 
-    #auto accept licence
-    echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
-    sudo apt-get install -y oracle-java8-installer oracle-java8-set-default
+    sudo apt-get install -y gnome-tweak-tool
 
     success 'installed packages'
 }
@@ -141,28 +147,33 @@ function install_spotify {
 
 
 function install_zsh {
-    success 'install zsh'
-    sudo apt-get install -y zsh
-    info 'change default shell to zsh'
-    chsh -s /bin/zsh    
-    info 'install oh-my-zsh'
-    wget –no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O – | sh 
+    info 'install zsh'
+    if [ ! "$SHELL"=="/bin/zsh" ]; then
+      sudo apt-get install -y zsh
+      info 'change default shell to zsh'
+      chsh -s /bin/zsh    
+      info 'install oh-my-zsh'
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    fi
     success 'installed ssh'
 }
 
 function install_python_virtualenv {
-    old_dir=`pwd`
-    success 'install python virtualenv'
-    info 'install pip & virtual env'
-    wget https://bootstrap.pypa.io/get-pip.py
-    sudo python get-pip.py
-    sudo pip install virtualenv
-    cd ~    #install virtualenv into home folder
-    info 'creating virtual env'
-    virtualenv env
-    source ~/env/bin/activate
-    success 'installed python virtualenv'
-    cd $old_dir
+    if [ ! -d "/home/$USER/python_env" ]; then
+      old_dir=`pwd`
+      info 'install python virtualenv'
+      info 'install pip & virtual env'
+      wget https://bootstrap.pypa.io/get-pip.py
+      sudo python get-pip.py
+      sudo pip install virtualenv
+      cd ~    #install virtualenv into home folder
+      info 'creating virtual env'
+      virtualenv python_env
+      source ~/python_env/bin/activate
+      success 'installed python virtualenv'
+      cd $old_dir
+    fi
+    success "installed python virtualenv"
 }
 
 function install_unity_tweak_tool_n_numix_theme {
@@ -202,15 +213,91 @@ function install_kvm {
      sudo adduser akai libvirtd
 }
 
+function install_chromium {
+  which chromium-browser
+  if [ ! $? -eq 0 ]; then
+    check_or_add_ppa 'canonical-chromium-builds/stage'
+    sudo apt-get update
+    sudo apt-get install -y chromium-browser
+  fi
+  success "installed chromium browser"
+}
+
+function install_java8 {
+  javac -version
+  if [ ! $? -eq 0 ]; then
+    info 'installing java8'
+    check_or_add_ppa 'webupd8team/java'
+    sudo apt-get update
+    sudo apt-get install -y oracle-java8-installer oracle-java8-set-default
+  fi
+  success 'done installing java8'
+}
+
+function install_thunderbird {
+  which thunderbird
+  if [ ! $? -eq 0 ]; then
+    info 'installing thunderbird'
+    check_or_add_ppa 'ubuntu-mozilla-security/ppa'
+    sudo apt-get update
+    sudo apt-get install thunderbird
+  fi
+  success "installed thunderbird"
+}
+
+function install_guake {
+  which guake
+  if [ ! $? -eq 0 ]; then
+    info "installing guake"
+    current_folder=`pwd`
+    info "installing guake"
+    sudo apt-get install -y python-dbus
+    git clone https://github.com/Guake/guake.git /tmp/guake
+    cd /tmp/guake
+    ./dev.sh --install
+    cd $current_folder
+  fi
+  success "installed guake, remember to change the hot key and add it to startup configuration"
+}
+
+function install_atom {
+  which atom
+  if [ ! $? -eq 0 ]; then
+    info "installing atom"
+    wget "https://atom.io/download/deb" -O /tmp/atom.deb
+    sudo dpkg -i /tmp/atom.deb
+  fi
+  success "installed atom"
+}
+
+function install_virtualbox {
+  which virtualbox
+  if [ ! $? -eq 0 ]; then
+    info "installing virtualbox"
+    sudo apt-get install -y libqt4-opengl libsdl1.2debian
+    wget 'http://download.virtualbox.org/virtualbox/5.0.40/virtualbox-5.0_5.0.40-115130~Ubuntu~xenial_amd64.deb' -O /tmp/virtualbox.deb
+    sudo dpkg -i /tmp/virtualbox.deb
+  fi
+  success "installed virtualbox, remember to install virtualbox extension pack at http://download.virtualbox.org/virtualbox/5.0.40/Oracle_VM_VirtualBox_Extension_Pack-5.0.40-115130.vbox-extpack"
+}
+
 #add_sources
-#install_packages
-#setup_git_config
-#init_dot_files
+install_packages
+setup_git_config
+init_dot_files
 #install_flux
-#install_vim_plugins
-#install_zsh
-#install_python_virtualenv
+install_vim_plugins
+install_chromium
+install_java8
+install_thunderbird
+install_node
+install_zsh
+install_python_virtualenv
+install_guake
+install_atom
+install_virtualbox
 #install_spotify
 #install_unity_tweak_tool_n_numix_theme
 #install_calibre
-install_kvm
+#install_kvm
+success 'you should restart your computer now'
