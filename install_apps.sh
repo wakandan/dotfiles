@@ -281,6 +281,17 @@ function install_virtualbox {
   success "installed virtualbox, remember to install virtualbox extension pack at http://download.virtualbox.org/virtualbox/5.0.40/Oracle_VM_VirtualBox_Extension_Pack-5.0.40-115130.vbox-extpack"
 }
 
+function install_bing_daily_wallpaper {
+  which bingwallpaper
+  if [ ! $? -eq 0 ]; then
+    info "installing bingwallpaper"
+    sudo add-apt-repository ppa:whizzzkid/bingwallpaper
+    sudo apt-get update
+    sudo apt-get install bingwallpaper
+  fi
+  success "installed bingwallpaper"
+}
+
 #add_sources
 install_packages
 setup_git_config
@@ -296,6 +307,7 @@ install_python_virtualenv
 install_guake
 install_atom
 install_virtualbox
+install_bing_daily_wallpaper
 #install_spotify
 #install_unity_tweak_tool_n_numix_theme
 #install_calibre
